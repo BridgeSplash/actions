@@ -35,17 +35,12 @@ runs:
       shell: "bash"
       run: "${{ inputs.gradle-command }}"
 
-    - name: "Lowercase Repo"
-      shell: "bash"
-      run: |
-        echo "REPOSITORY=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
-
     # Identifies if the branch is main or not and therefore whether we should tag the image as latest
     # Creates the tags for use later (either hash or latest and hash)
     - name: "Identify Environment"
       shell: bash
       run: |
-        tag_prefix="ghcr.io/${{ env.repository }}"
+        tag_prefix="ghcr.io/${{ github.repository,, }}"
         tags=""
         
         if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
