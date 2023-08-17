@@ -40,7 +40,7 @@ runs:
     - name: "Identify Environment"
       shell: bash
       run: |
-        tag_prefix="ghcr.io/${{ github.repository,, }}"
+        tag_prefix="ghcr.io/${{GITHUB_REPOSITORY,,}}"
         tags=""
         
         if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
