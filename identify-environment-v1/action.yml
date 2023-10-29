@@ -18,7 +18,7 @@ runs:
     - name: "Identify Environment"
       shell: bash
       run: |
-        tag_prefix="${{ inputs.registry-address }}/${{ github.repository }}"
+        tag_prefix="${{ inputs.registry-address }}/${GITHUB_REPOSITORY,,}"
         tags=""
 
         if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
