@@ -11,7 +11,7 @@ inputs:
     default: "./Dockerfile"
   java-version:
     description: "The Java version to build with"
-    default: 20
+    default: 21
   token:
     description: "The GitHub token used to push the Docker image to the registry"
     required: true
