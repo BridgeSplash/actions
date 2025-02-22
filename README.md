@@ -1,2 +1,2 @@
 # actions
-Github actions for bridgesplash
+Github actions for BridgeSplash

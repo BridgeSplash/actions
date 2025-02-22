@@ -1,0 +1,49 @@
+name: docker-upload-artifact
+description: "compiles and uploads the artifact with Dockerfile, and releases"
+
+inputs:
+  dockerfile-path:
+    description: "The path to the Dockerfile"
+    default: "Dockerfile"
+  docker-username:
+    description: "The username to use when authenticating with the Docker repository"
+  docker-password:
+    description: "The password to use when authenticating with the Docker repository"
+  artifact-name:
+    description: "The name of the artifact"
+    default: "built-jar"
+  artifact-path:
+    description: "The path to the artifact"
+    default: "build/libs"
+
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Download JAR Artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ inputs.artifact-name }}
+        path: ${{ inputs.artifact-path }}
+
+    - name: Build Docker Image
+      run: |
+        REPO_NAME=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+        TAG=$(echo "${{ github.ref_name }}" | tr '[:upper:]' '[:lower:]')
+        docker build -t ghcr.io/$REPO_NAME:$TAG .
+
+    - name: Log in to GitHub Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Push Docker Image
+      run: |
+        REPO_NAME=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+        TAG=$(echo "${{ github.ref_name }}" | tr '[:upper:]' '[:lower:]')
+        docker push ghcr.io/$REPO_NAME:$TAG

@@ -1,0 +1,25 @@
+name: "notify-discord"
+description: "Notifies a Discord channel with the status of a GitHub Actions workflow"
+
+inputs:
+  status:
+    description: "The status of the workflow"
+    required: true
+  workflow-name:
+    description: "The name of the workflow"
+    default: "${{ github.workflow }}"
+  webhook_id:
+    description: "The ID of the webhook"
+    required: true
+
+runs:
+  using: "composite"
+
+  steps:
+  - name: Run the GitHub Actions Status Embed Action
+    uses: SebastiaanZ/github-status-embed-for-discord@main
+    with:
+      webhook_id: ${{ inputs.webhook_id }}
+      webhook_token: ${{ secrets.WEBHOOK_TOKEN }}
+      workflow_name: ${{ inputs.workflow-name }}
+      status: ${{ inputs.status }}
