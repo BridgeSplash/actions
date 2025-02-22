@@ -2,19 +2,19 @@ name: "upload-artifact-release"
 description: "uploads the JAR as an artifact"
 
 inputs:
-  artifact-name:
+  artifact_name:
     description: "The name of the artifact"
     default: "built-jar"
-  artifact-path:
+  artifact_path:
     description: "The path to the artifact"
     default: "build/libs"
-  release-version:
+  release_version:
     description: "The version of the release"
     default: "${{ github.ref_name }}"
-  release-files:
+  release_files:
     description: "The files to upload as artifacts"
     default: "build/libs/*.jar"
-  release-latest:
+  release_latest:
     description: "Whether to make the release the latest"
     default: "true"
 
@@ -24,16 +24,16 @@ runs:
     - name: Download JAR Artifact
       uses: actions/download-artifact@v4
       with:
-        name: ${{ inputs.artifact-name }}
-        path: ${{ inputs.artifact-path }}
+        name: ${{ inputs.artifact_name }}
+        path: ${{ inputs.artifact_path }}
 
     - name: Upload JAR to Release
       id: upload-release
       uses: softprops/action-gh-release@v2
       with:
-        files: ${{ inputs.release-files }}
+        files: ${{ inputs.release_files }}
         generate_release_notes: true
-        make_latest: ${{ inputs.release-latest }}
-        tag_name: ${{ inputs.release-version }}
+        make_latest: ${{ inputs.release_latest }}
+        tag_name: ${{ inputs.release_version }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

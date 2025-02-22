@@ -6,10 +6,10 @@ inputs:
   gradle-command:
     description: "The command executed by Gradle to build the project"
     default: "./gradlew clean shadowJar --no-daemon"
-  java-version:
+  java_version:
     description: "The Java version to build with"
     default: "21"
-  java-distribution:
+  java_distribution:
     description: "The Java distribution to build with"
     default: "temurin"
 
@@ -29,8 +29,8 @@ runs:
     - name: "Set up JDK"
       uses: "actions/setup-java@v2"
       with:
-        java-version: ${{ inputs.java-version }}
-        distribution: ${{ inputs.java-distribution }}
+        java-version: ${{ inputs.java_version }}
+        distribution: ${{ inputs.java_distribution }}
 
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
@@ -42,7 +42,7 @@ runs:
         MAVEN_SECRET: ${{ secrets.MAVEN_SECRET }}
         COMMIT_HASH: "${{ steps.commit.outputs.hash }}"
         COMMIT_HASH_SHORT: "${{ steps.commit.outputs.short }}"
-      run: "${{ inputs.gradle-command }}"
+      run: "${{ inputs.gradle_command }}"
 
     - name: Upload JAR to Release
       id: upload-release

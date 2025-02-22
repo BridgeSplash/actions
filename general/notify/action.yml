@@ -5,7 +5,7 @@ inputs:
   status:
     description: "The status of the workflow"
     required: true
-  workflow-name:
+  workflow_name:
     description: "The name of the workflow"
     default: "${{ github.workflow }}"
   webhook_id:
@@ -21,5 +21,5 @@ runs:
     with:
       webhook_id: ${{ inputs.webhook_id }}
       webhook_token: ${{ secrets.WEBHOOK_TOKEN }}
-      workflow_name: ${{ inputs.workflow-name }}
+      workflow_name: ${{ inputs.workflow_name }}
       status: ${{ inputs.status }}

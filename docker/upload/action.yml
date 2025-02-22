@@ -2,17 +2,10 @@ name: docker-upload-artifact
 description: "compiles and uploads the artifact with Dockerfile, and releases"
 
 inputs:
-  dockerfile-path:
-    description: "The path to the Dockerfile"
-    default: "Dockerfile"
-  docker-username:
-    description: "The username to use when authenticating with the Docker repository"
-  docker-password:
-    description: "The password to use when authenticating with the Docker repository"
-  artifact-name:
+  artifact_name:
     description: "The name of the artifact"
     default: "built-jar"
-  artifact-path:
+  artifact_path:
     description: "The path to the artifact"
     default: "build/libs"
 
@@ -26,8 +19,8 @@ runs:
     - name: Download JAR Artifact
       uses: actions/download-artifact@v4
       with:
-        name: ${{ inputs.artifact-name }}
-        path: ${{ inputs.artifact-path }}
+        name: ${{ inputs.artifact_name }}
+        path: ${{ inputs.artifact_path }}
 
     - name: Build Docker Image
       run: |

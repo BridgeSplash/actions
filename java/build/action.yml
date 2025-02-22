@@ -3,18 +3,25 @@ description: "Builds a Java project and uploads the JAR as an artifact"
 
 
 inputs:
-  gradle-command:
+  gradle_command:
     description: "The command executed by Gradle to build the project"
     default: "./gradlew clean shadowJar --no-daemon"
-  java-version:
+  java_version:
     description: "The Java version to build with"
     default: "21"
-  java-distribution:
+  java_distribution:
     description: "The Java distribution to build with"
     default: "temurin"
-  release-version:
+  release_version:
     description: "The version of the release"
     default: "${{ github.ref_name }}"
+  artifact_name:
+    description: "The name of the artifact"
+    default: "built-jar"
+  artifact_path:
+    description: "The path to the artifact"
+    default: "build/libs/*.jar"
+
 
 runs:
   using: "composite"
@@ -25,19 +32,19 @@ runs:
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          java-version: ${{ inputs.java-version }}
-          distribution: ${{ inputs.java-distribution }}
+          java-version: ${{ inputs.java_version }}
+          distribution: ${{ inputs.java_distribution }}
 
       - name: Build with Gradle
         shell: "bash"
         env:
           MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
           MAVEN_SECRET: ${{ secrets.MAVEN_SECRET }}
-          RELEASE_VERSION: ${{ inputs.release-version }}
-        run: "${{ inputs.gradle-command }}"
+          RELEASE_VERSION: ${{ inputs.release_version }}
+        run: "${{ inputs.gradle_command }}"
 
       - name: Upload JAR Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: built-jar
-          path: build/libs/*.jar
+          name: ${{ inputs.artifact_name }}
+          path: ${{ inputs.artifact_path }}

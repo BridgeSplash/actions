@@ -3,20 +3,20 @@ description: "Builds and publishes a Java project to the releases repository"
 author: "TropicalShadow"
 
 inputs:
-  publish-task:
+  publish_task:
     description: "The Gradle task to publish the package"
     default: "publishMavenPublicationToReleaseRepository"
-  root-directory:
+  root_directory:
     description: "The relative path to the root directory of the project, if the Java project is not in the root"
     default: "."
-  maven-username:
+  maven_username:
     description: "The username to use when authenticating with the Maven repository"
-  maven-password:
+  maven_password:
     description: "The password to use when authenticating with the Maven repository"
-  java-version:
+  java_version:
     description: "The Java version to build with"
     default: "21"
-  java-distribution:
+  java_distribution:
     description: "The Java distribution to build with"
     default: "temurin"
 
@@ -34,8 +34,8 @@ runs:
     - name: "Set up Java"
       uses: "actions/setup-java@v4"
       with:
-        java-version: "21"
-        distribution: "zulu"
+        java-version: ${{ inputs.java_version }}
+        distribution: ${{ inputs.java_distribution }}
 
     - name: "Validate Gradle wrapper"
       uses: "gradle/actions/wrapper-validation@v4"
@@ -43,9 +43,9 @@ runs:
     - name: "Publish package"
       uses: "gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1"
       with:
-        arguments: "${{ inputs.publish-task }}"
-        build-root-directory: "${{ inputs.root-directory }}"
+        arguments: "${{ inputs.publish_task }}"
+        build-root-directory: "${{ inputs.root_directory }}"
       env:
-        MAVEN_USERNAME: "${{ inputs.maven-username }}"
-        MAVEN_SECRET: "${{ inputs.maven-password }}"
+        MAVEN_USERNAME: "${{ inputs.maven_username }}"
+        MAVEN_SECRET: "${{ inputs.maven_password }}"
         RELEASE_VERSION: "${{ github.ref_name }}"
