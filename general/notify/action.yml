@@ -11,6 +11,9 @@ inputs:
   webhook_id:
     description: "The ID of the webhook"
     required: true
+  webhook_token:
+    description: "The token of the webhook"
+    required: true
 
 runs:
   using: "composite"
@@ -20,6 +23,6 @@ runs:
     uses: SebastiaanZ/github-status-embed-for-discord@main
     with:
       webhook_id: ${{ inputs.webhook_id }}
-      webhook_token: ${{ secrets.WEBHOOK_TOKEN }}
+      webhook_token: ${{ inputs.WEBHOOK_TOKEN }}
       workflow_name: ${{ inputs.workflow_name }}
       status: ${{ inputs.status }}

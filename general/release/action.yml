@@ -17,6 +17,9 @@ inputs:
   release_latest:
     description: "Whether to make the release the latest"
     default: "true"
+  github_token:
+    description: "The GitHub token"
+    required: true
 
 runs:
   using: "composite"
@@ -36,4 +39,4 @@ runs:
         make_latest: ${{ inputs.release_latest }}
         tag_name: ${{ inputs.release_version }}
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ inputs.github_token }}

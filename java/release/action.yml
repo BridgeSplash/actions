@@ -12,6 +12,15 @@ inputs:
   java_distribution:
     description: "The Java distribution to build with"
     default: "temurin"
+  maven_username:
+    description: "The username for the Maven repository"
+    required: true
+  maven_secret:
+    description: "The secret for the Maven repository"
+    required: true
+  github_token:
+    description: "The GitHub token"
+    required: true
 
 runs:
   using: "composite"
@@ -38,8 +47,8 @@ runs:
     - name: "Build with Gradle"
       shell: "bash"
       env:
-        MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
-        MAVEN_SECRET: ${{ secrets.MAVEN_SECRET }}
+        MAVEN_USERNAME: ${{ inputs.maven_username }}
+        MAVEN_SECRET: ${{ inputs.maven_secret }}
         COMMIT_HASH: "${{ steps.commit.outputs.hash }}"
         COMMIT_HASH_SHORT: "${{ steps.commit.outputs.short }}"
       run: "${{ inputs.gradle_command }}"
@@ -53,4 +62,4 @@ runs:
         tag_name: ${{ steps.commit.outputs.short }}
         prerelease: true
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ inputs.github_token }}
